@@ -22,21 +22,26 @@ If you don't have permission to install it like that, you can simply download th
 ========
 Examples
 ========
-Here is a way to use it::
+Here are all the things you can do with it::
 
     from genomes import Assembly
     a = Assembly('sacCer2')
-    a.guess_chromsome_name('chr1')
+    print a.chrmeta
+    print a.guess_chromsome_name('chr1')
 """
 
 b'This module needs Python 2.6 or later.'
 
 # Special variables #
-__version__ = '1.0.0'
+__version__ = '0.0.0-1-g9eaf3db'
 
 ################################################################################
 class Assembly(object):
-    """Lorem ipsum."""
+    """The only object provided by the library.
+
+       :param assembly: Aa valid assembly name.
+       :type  assembly: string
+    """
 
     def __init__(self, assembly):
         pass
@@ -50,8 +55,8 @@ class Assembly(object):
     def chrmeta(self):
         """A dictionary of chromosome metadata::
 
-            >>> from track import genrep
-            >>> a = genrep.Assembly('TAIR10')
+            >>> from genomes import Assembly
+            >>> a = Assembly('TAIR10')
             >>> print a.chrmeta
             {'c': {'length': 154478}, 'm': {'length': 366924}, '1': {'length': 30427671}, '3': {'length': 23459830}, '2': {'length': 19698289}, '5': {'length': 26975502}, '4': {'length': 18585056}}
         """
