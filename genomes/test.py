@@ -17,4 +17,8 @@ __test__ = True
 ###################################################################################
 class Test(unittest.TestCase):
     def runTest(self):
-        pass
+        a = Assembly('sacCer2')
+        tests = [(1,'chrI'),('chr1','chrI'),('chrI','chrI'),('I','chrI')]
+        for got,expected in tests:
+            got = a.guess_chromosome_name(1)
+            self.assertEqual(got, expected)

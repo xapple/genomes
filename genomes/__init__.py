@@ -33,7 +33,7 @@ Here are all the things you can do with it::
 b'This module needs Python 2.6 or later.'
 
 # Special variables #
-__version__ = '0.0.0-3-g54bad4a'
+__version__ = '0.0.0-4-ge441b43'
 
 # Built-in modules #
 import os, sqlite3
@@ -97,13 +97,16 @@ class Assembly(object):
                >>> print a.guess_chromosome_name('chrR')
                2micron
         """
+        # Convert to unicode #
+        chromosome_name = unicode(chromosome_name)
         # Check for synonyms #
         for chrom in self.chromosomes:
             if chromosome_name in chrom['synonyms']: return chrom['label']
         # Do some guessing #
         name = chromosome_name.lstrip('chr')
         for chrom in self.chromosomes:
-            if name is chrom['name']: return chrom['label']
+            if name == chrom['name']: return chrom['label']
+            if name == chrom['label'].strip('chr'): return chrom['label']
 
 ################################################################################
 if __name__ == "__main__":
