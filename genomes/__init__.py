@@ -33,7 +33,7 @@ Here are all the things you can do with it::
 b'This module needs Python 2.6 or later.'
 
 # Special variables #
-__version__ = '0.0.0-2-g75f7dae'
+__version__ = '0.0.0-3-g54bad4a'
 
 # Built-in modules #
 import os, sqlite3
@@ -64,9 +64,10 @@ class Assembly(object):
         # Load the chromosome data #
         cursor.execute("select * from '%s'" % assembly)
         columns = [x[0] for x in cursor.description]
-        self.chromsomes = [dict(zip(columns,chrom)) for chrom in cursor]
+        self.chromosomes = [dict(zip(columns,chrom)) for chrom in cursor]
         # Cut the synonyms #
-        for chrom in self.chromosomes: chrom['synonyms'] = chrom['synonyms'].split(',')
+        for chrom in self.chromosomes:
+            chrom['synonyms'] = chrom['synonyms'].split(',') if chrom['synonyms'] else []
 
     @property
     def chrmeta(self):
@@ -75,7 +76,7 @@ class Assembly(object):
             >>> from genomes import Assembly
             >>> a = Assembly('TAIR10')
             >>> print a.chrmeta
-            {'c': {'length': 154478}, 'm': {'length': 366924}, '1': {'length': 30427671}, '3': {'length': 23459830}, '2': {'length': 19698289}, '5': {'length': 26975502}, '4': {'length': 18585056}}
+            {u'c': {'length': 154478}, u'm': {'length': 366924}, u'1': {'length': 30427671}, u'3': {'length': 23459830}, u'2': {'length': 19698289}, u'5': {'length': 26975502}, u'4': {'length': 18585056}}
         """
         return dict([(chrom['label'], dict([('length', chrom['length'])])) for chrom in self.chromosomes])
 
@@ -91,17 +92,17 @@ class Assembly(object):
 
            ::
 
-               >>> from track import genrep
-               >>> a = genrep.Assembly('sacCer2')
+               >>> from genomes import Assembly
+               >>> a = Assembly('sacCer2')
                >>> print a.guess_chromosome_name('chrR')
                2micron
         """
         # Check for synonyms #
-        for chrom in self.chromsomes:
+        for chrom in self.chromosomes:
             if chromosome_name in chrom['synonyms']: return chrom['label']
         # Do some guessing #
         name = chromosome_name.lstrip('chr')
-        for chrom in self.chromsomes:
+        for chrom in self.chromosomes:
             if name is chrom['name']: return chrom['label']
 
 ################################################################################
