@@ -1,6 +1,6 @@
-===============================
-Package *'empty'* documentation
-===============================
+=================================
+Package *'genomes'* documentation
+=================================
 
-.. automodule:: empty
+.. automodule:: genomes
    :members:

@@ -1,14 +1,15 @@
 from distutils.core import setup
 
 setup(
-        name             = 'empty',
+        name             = 'genomes',
         version          = '1.0.0',
-        description      = 'Empty template',
+        description      = 'Access to genomie assemblies meta data',
         long_description = open('README.txt').read(),
         license          = 'Kopimi',
-        url              = 'http://example.com/empty',
+        url              = 'http://xapple.github.com/genomes/',
         author           = 'Lucas Sinclair',
         author_email     = 'lucas.sinclair@me.com',
         classifiers      = ['Topic :: Scientific/Engineering :: Bio-Informatics'],
-        packages         = ['empty'],
+        packages         = ['genomes'],
+        package_data     = {'genomes': ['genomes.db']},
     )
