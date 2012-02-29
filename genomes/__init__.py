@@ -33,23 +33,40 @@ Here are all the things you can do with it::
 b'This module needs Python 2.6 or later.'
 
 # Special variables #
-__version__ = '0.0.0-1-g9eaf3db'
+__version__ = '0.0.0-2-g75f7dae'
+
+# Built-in modules #
+import os, sqlite3
+
+# The database #
+path = os.path.abspath(os.path.dirname(__file__)) + '/genomes.db'
+connection = sqlite3.connect(path)
+cursor = connection.cursor()
+
+# The list of assemblies #
+cursor.execute("select name from sqlite_master where type='table'")
+assemblies = [x[0] for x in cursor if x[0] != 'assemblies']
 
 ################################################################################
 class Assembly(object):
     """The only object provided by the library.
 
-       :param assembly: Aa valid assembly name.
+       :param assembly: A valid assembly name.
        :type  assembly: string
     """
 
     def __init__(self, assembly):
-        pass
-
-    @property
-    def chromosomes(self):
-        """A list of chromsome dicitonaries."""
-        return None
+        # Check the input type #
+        if not isinstance(assembly, str):
+            raise TypeError('The assembly paramater needs to be a string such as "sacCer2".')
+        if not assembly in assemblies:
+            raise TypeError('The assembly "%s" was not found in the database.' % assembly)
+        # Load the chromosome data #
+        cursor.execute("select * from '%s'" % assembly)
+        columns = [x[0] for x in cursor.description]
+        self.chromsomes = [dict(zip(columns,chrom)) for chrom in cursor]
+        # Cut the synonyms #
+        for chrom in self.chromosomes: chrom['synonyms'] = chrom['synonyms'].split(',')
 
     @property
     def chrmeta(self):
@@ -60,7 +77,7 @@ class Assembly(object):
             >>> print a.chrmeta
             {'c': {'length': 154478}, 'm': {'length': 366924}, '1': {'length': 30427671}, '3': {'length': 23459830}, '2': {'length': 19698289}, '5': {'length': 26975502}, '4': {'length': 18585056}}
         """
-        return None
+        return dict([(chrom['label'], dict([('length', chrom['length'])])) for chrom in self.chromosomes])
 
     def guess_chromosome_name(self, chromosome_name):
         """Searches the assembly for chromosome synonym names,
@@ -79,7 +96,13 @@ class Assembly(object):
                >>> print a.guess_chromosome_name('chrR')
                2micron
         """
-        return None
+        # Check for synonyms #
+        for chrom in self.chromsomes:
+            if chromosome_name in chrom['synonyms']: return chrom['label']
+        # Do some guessing #
+        name = chromosome_name.lstrip('chr')
+        for chrom in self.chromsomes:
+            if name is chrom['name']: return chrom['label']
 
 ################################################################################
 if __name__ == "__main__":

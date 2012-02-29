@@ -149,7 +149,7 @@ for a in assemblies:
     for ch in chromosomes:
         for data in ch['chr_names']:
             if data['chr_name']['assembly_id'] == a['id']:
-                chrs.append([data['chr_name']['value'] + [ch[k] for k in base_keys]])
+                chrs.append([data['chr_name']['value']] + [ch[k] for k in base_keys])
     # Write it #
     cursor.execute("CREATE table '%s' %s" % (a['name'], col_string))
     command = ("INSERT into '%s' " + col_string + ' values ' + question_marks) % a['name']
