@@ -28,12 +28,16 @@ Here are all the things you can do with it::
     a = Assembly('sacCer2')
     print a.chrmeta
     print a.guess_chromsome_name('chr1')
+
+====
+Code
+====
 """
 
 b'This module needs Python 2.6 or later.'
 
 # Special variables #
-__version__ = '0.0.0-4-ge441b43'
+__version__ = '1.0.0'
 
 # Built-in modules #
 import os, sqlite3
