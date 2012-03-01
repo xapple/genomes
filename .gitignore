@@ -12,8 +12,9 @@
 /.idea
 
 # Build stuff #
-/MANIFEST
+_build/
 /build/
+/MANIFEST
 /dist/
 
 # Git files #

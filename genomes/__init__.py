@@ -37,7 +37,7 @@ Code
 b'This module needs Python 2.6 or later.'
 
 # Special variables #
-__version__ = '1.0.0-2-ge153807'
+__version__ = '1.0.0-1-g918c9bd'
 
 # Built-in modules #
 import os, sqlite3
