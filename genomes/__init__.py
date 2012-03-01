@@ -13,9 +13,9 @@ To install you can simply type::
 
 If you don't have permission to install it like that, you can simply download the code and include the directory in your python path::
 
-    $ wget http://pypi.python.org/packages/source/g/genomes/genomes-1.0.0.tar.gz
-    $ tar -xzf genomes-1.0.0.tar.gz
-    $ cd genomes-1.0.0/
+    $ wget http://pypi.python.org/packages/source/g/genomes/genomes-1.0.1.tar.gz
+    $ tar -xzf genomes-1.0.1.tar.gz
+    $ cd genomes-1.0.1/
     $ sed -i "$ a\export PYTHONPATH=`pwd`/:\$PYTHONPATH" ~/.bashrc
     $ source ~/.bashrc
 
