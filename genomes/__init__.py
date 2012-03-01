@@ -75,7 +75,9 @@ class Assembly(object):
 
     @property
     def chrmeta(self):
-        """A dictionary of chromosome metadata::
+        """A dictionary of chromosome metadata:
+
+        ::
 
             >>> from genomes import Assembly
             >>> a = Assembly('TAIR10')
