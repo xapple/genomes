@@ -1,88 +1,186 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset='utf-8'>
 
-  <title>xapple/genomes @ GitHub</title>
 
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #d6d6d6;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #292929; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #292929; }
-    h3 { text-align: center; color: #292929; }
-    a { color: #292929; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<body>
-  <a href="https://github.com/xapple/genomes"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-
-  <div id="container">
-
-    <div class="download">
-      <a href="https://github.com/xapple/genomes/zipball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/zip.png"></a>
-      <a href="https://github.com/xapple/genomes/tarball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="https://github.com/xapple/genomes">genomes</a>
-      <span class="small">by <a href="https://github.com/xapple">xapple</a></span></h1>
-
-    <div class="description">
-      Easy access to meta data about genome assemblies
-    </div>
-
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
+    <title>Package ‘genomes’ documentation</title>
+    <link rel="stylesheet" href="_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.0-5-g6bea06a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/logo.png"/>
+    <link rel="top" title="None" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">genomes v0.0.0-5-g6bea06a</a> &raquo;</li> 
+      </ul>
+    </div>  
 
-    
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-genomes">
+<span id="package-genomes-documentation"></span><h1>Package <em>&#8216;genomes&#8217;</em> documentation<a class="headerlink" href="#module-genomes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>genomes</strong> software is a package written in Python. It is designed to provide easy access to some meta data about genome assemblies. You can retrieve the list of chromosomes for any assembly. In addition, you can get the lengths in base pairs of every chromosome.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>To install you can simply type:</p>
+<div class="highlight-python"><pre>$ sudo easy_install genomes</pre>
+</div>
+<p>If you don&#8217;t have permission to install it like that, you can simply download the code and include the directory in your python path:</p>
+<div class="highlight-python"><pre>$ wget http://pypi.python.org/packages/source/g/genomes/genomes-1.0.0.tar.gz
+$ tar -xzf genomes-1.0.0.tar.gz
+$ cd genomes-1.0.0/
+$ sed -i "$ a\export PYTHONPATH=`pwd`/:\$PYTHONPATH" ~/.bashrc
+$ source ~/.bashrc</pre>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Here are all the things you can do with it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">genomes</span> <span class="kn">import</span> <span class="n">Assembly</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">Assembly</span><span class="p">(</span><span class="s">&#39;sacCer2&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">a</span><span class="o">.</span><span class="n">chrmeta</span>
+<span class="k">print</span> <span class="n">a</span><span class="o">.</span><span class="n">guess_chromsome_name</span><span class="p">(</span><span class="s">&#39;chr1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="genomes.Assembly">
+<em class="property">class </em><tt class="descclassname">genomes.</tt><tt class="descname">Assembly</tt><big>(</big><em>assembly</em><big>)</big><a class="reference internal" href="_modules/genomes.html#Assembly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genomes.Assembly" title="Permalink to this definition">¶</a></dt>
+<dd><p>The only object provided by the library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>assembly</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#string" title="(in Python v2.7)"><em>string</em></a>) &#8211; A valid assembly name.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="genomes.Assembly.chrmeta">
+<tt class="descname">chrmeta</tt><a class="reference internal" href="_modules/genomes.html#Assembly.chrmeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genomes.Assembly.chrmeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary of chromosome metadata:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">genomes</span> <span class="kn">import</span> <span class="n">Assembly</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Assembly</span><span class="p">(</span><span class="s">&#39;TAIR10&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">a</span><span class="o">.</span><span class="n">chrmeta</span>
+</pre></div>
+</div>
+<p>{u&#8217;c&#8217;: {&#8216;length&#8217;: 154478}, u&#8217;m&#8217;: {&#8216;length&#8217;: 366924}, u&#8216;1&#8217;: {&#8216;length&#8217;: 30427671}, u&#8216;3&#8217;: {&#8216;length&#8217;: 23459830}, u&#8216;2&#8217;: {&#8216;length&#8217;: 19698289}, u&#8216;5&#8217;: {&#8216;length&#8217;: 26975502}, u&#8216;4&#8217;: {&#8216;length&#8217;: 18585056}}</p>
+</dd></dl>
 
-    
+<dl class="method">
+<dt id="genomes.Assembly.guess_chromosome_name">
+<tt class="descname">guess_chromosome_name</tt><big>(</big><em>chromosome_name</em><big>)</big><a class="reference internal" href="_modules/genomes.html#Assembly.guess_chromosome_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#genomes.Assembly.guess_chromosome_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches the assembly for chromosome synonym names,
+and returns the canonical name of the chromosome.
+Returns None if the chromosome is not known about.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chromosome_name</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Any given name for a chromosome in this assembly.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">The same or an other name for the chromosome.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">genomes</span> <span class="kn">import</span> <span class="n">Assembly</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Assembly</span><span class="p">(</span><span class="s">&#39;sacCer2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">a</span><span class="o">.</span><span class="n">guess_chromosome_name</span><span class="p">(</span><span class="s">&#39;chrR&#39;</span><span class="p">)</span>
+<span class="go">2micron</span>
+</pre></div>
+</div>
+</dd></dl>
 
-    
+</dd></dl>
 
-    
-      <h2>Authors</h2>
-      <p>Lucas Sinclair (lucas.sinclair@me.com)<br/>      </p>
-    
+</div>
+</div>
 
-    
-      <h2>Contact</h2>
-      <p>Lucas Sinclair (lucas.sinclair@me.com)<br/>      </p>
-    
 
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="https://github.com/xapple/genomes/zipball/master">zip</a> or
-      <a href="https://github.com/xapple/genomes/tarball/master">tar formats.
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="#">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Package <em>&#8216;genomes&#8217;</em> documentation</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
     </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/xapple/genomes</pre>
-    </p>
-
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">genomes v0.0.0-5-g6bea06a</a> &raquo;</li> 
+      </ul>
+    </div>
     <div class="footer">
-      get the source code on GitHub : <a href="https://github.com/xapple/genomes">xapple/genomes</a>
+      Last updated on Mar 01, 2012.
+    <a href="http://www.gnu.org/licenses/gpl-3.0.txt"><p>GPL3 licensed</p></a>
     </div>
-
-  </div>
-
-</body>
+  </body>
 </html>
