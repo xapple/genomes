@@ -37,7 +37,7 @@ Code
 b'This module needs Python 2.6 or later.'
 
 # Special variables #
-__version__ = '1.0.0-1-g918c9bd'
+__version__ = '1.0.0-2-g8abc607'
 
 # Built-in modules #
 import os, sqlite3
@@ -61,7 +61,7 @@ class Assembly(object):
 
     def __init__(self, assembly):
         # Check the input type #
-        if not isinstance(assembly, str):
+        if not isinstance(assembly, basestring):
             raise TypeError('The assembly paramater needs to be a string such as "sacCer2".')
         if not assembly in assemblies:
             raise TypeError('The assembly "%s" was not found in the database.' % assembly)
