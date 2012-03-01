@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
         name             = 'genomes',
         version          = '1.0.0',
-        description      = 'Access to genomie assemblies meta data',
+        description      = 'Access to genomic assemblies meta data',
         long_description = open('README.txt').read(),
         license          = 'Kopimi',
         url              = 'http://xapple.github.com/genomes/',
