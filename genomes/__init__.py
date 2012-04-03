@@ -40,7 +40,7 @@ b'This module needs Python 2.6 or later.'
 __version__ = '1.0.1'
 
 # Built-in modules #
-import os, sqlite3
+import os, re, sqlite3
 
 # The database #
 path = os.path.abspath(os.path.dirname(__file__)) + '/genomes.db'
@@ -87,14 +87,12 @@ class Assembly(object):
         return dict([(chrom['label'], dict([('length', chrom['length'])])) for chrom in self.chromosomes])
 
     def guess_chromosome_name(self, chromosome_name):
-        """Searches the assembly for chromosome synonym names,
-           and returns the canonical name of the chromosome.
-           Returns None if the chromosome is not known about.
+        """Searches the assembly for chromosome synonym names, and returns the canonical name of the chromosome.
 
            :param chromosome_name: Any given name for a chromosome in this assembly.
            :type  chromosome_name: string
 
-           :returns: The same or an other name for the chromosome.
+           :returns: The same or an other name for the chromosome. Returns None if the chromosome is not known about.
 
            ::
 
@@ -102,12 +100,20 @@ class Assembly(object):
                >>> a = Assembly('sacCer2')
                >>> print a.guess_chromosome_name('chrR')
                2micron
+               >>> a = Assembly('hg19')
+               >>> print a.guess_chromosome_name('NC_000023.9')
+               chrX
         """
         # Convert to unicode #
         chromosome_name = unicode(chromosome_name)
         # Check for synonyms #
         for chrom in self.chromosomes:
             if chromosome_name in chrom['synonyms']: return chrom['label']
+        # Check for NCBI nomenclature #
+        if chromosome_name.startswith('NC_'):
+            name = re.sub('\.[0-9]+$', '', chromosome_name)
+            for chrom in self.chromosomes:
+                if name == chrom['refseq_locus']: return chrom['label']
         # Do some guessing #
         name = chromosome_name.lstrip('chr')
         for chrom in self.chromosomes:
