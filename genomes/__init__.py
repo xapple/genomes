@@ -37,7 +37,7 @@ Code
 b'This module needs Python 2.6 or later.'
 
 # Special variables #
-__version__ = '1.0.1'
+__version__ = '1.0.1-2-g2802b67'
 
 # Built-in modules #
 import os, re, sqlite3
@@ -82,9 +82,16 @@ class Assembly(object):
             >>> from genomes import Assembly
             >>> a = Assembly('TAIR10')
             >>> print a.chrmeta
-            {u'c': {'length': 154478}, u'm': {'length': 366924}, u'1': {'length': 30427671}, u'3': {'length': 23459830}, u'2': {'length': 19698289}, u'5': {'length': 26975502}, u'4': {'length': 18585056}}
+            {u'c': {'length': 154478, 'refseq': u'NC_000932.1'}, u'm': {'length': 366924, 'refseq': u'NC_001284.2'}, u'1': {'length': 30427671, 'refseq': u'NC_003070.9'}, u'3': {'length': 23459830, 'refseq': u'NC_003074.8'}, u'2': {'length': 19698289, 'refseq': u'NC_003071.7'}, u'5': {'length': 26975502, 'refseq': u'NC_003076.8'}, u'4': {'length': 18585056, 'refseq': u'NC_003075.7'}}
         """
-        return dict([(chrom['label'], dict([('length', chrom['length'])])) for chrom in self.chromosomes])
+        result = {}
+        for chrom in self.chromosomes:
+            chrom_info = {}
+            chrom_info['length'] = chrom['length']
+            chrom_info['refseq'] = '%s.%s' % (chrom['refseq_locus'], chrom['refseq_version'])
+            result[chrom['label']] = chrom_info
+        return result
+        return dict([(chrom['label'], dict([('length', chrom['length']), ('refseq', chrom['refseq_locus'])])) for chrom in self.chromosomes])
 
     def guess_chromosome_name(self, chromosome_name):
         """Searches the assembly for chromosome synonym names, and returns the canonical name of the chromosome.
