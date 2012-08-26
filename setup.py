@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
         name             = 'genomes',
-        version          = '1.0.1',
+        version          = '1.1.0',
         description      = 'Access to genomic assemblies meta data',
         long_description = open('README.txt').read(),
         license          = 'MIT',
