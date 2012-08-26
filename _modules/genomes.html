@@ -3,17 +3,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
     <title>genomes</title>
+    
     <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.1',
+        VERSION:     '1.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -36,7 +39,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">genomes v1.0.1</a> &raquo;</li>
+        <li><a href="../index.html">genomes v1.1.0</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -60,13 +63,10 @@
 
 <span class="sd">    $ sudo easy_install genomes</span>
 
-<span class="sd">If you don&#39;t have permission to install it like that, you can simply download the code and include the directory in your python path::</span>
+<span class="sd">That&#39;s it. However, if that doesn&#39;t work because you don&#39;t have sufficient permissions, you can simply install it somewhere else (for instance in your home)::</span>
 
-<span class="sd">    $ wget http://pypi.python.org/packages/source/g/genomes/genomes-1.0.0.tar.gz</span>
-<span class="sd">    $ tar -xzf genomes-1.0.0.tar.gz</span>
-<span class="sd">    $ cd genomes-1.0.0/</span>
-<span class="sd">    $ sed -i &quot;$ a\export PYTHONPATH=`pwd`/:\$PYTHONPATH&quot; ~/.bashrc</span>
-<span class="sd">    $ source ~/.bashrc</span>
+<span class="sd">    $ cd ~</span>
+<span class="sd">    $ pip install -e git+https://github.com/xapple/genomes</span>
 
 <span class="sd">========</span>
 <span class="sd">Examples</span>
@@ -77,15 +77,19 @@
 <span class="sd">    a = Assembly(&#39;sacCer2&#39;)</span>
 <span class="sd">    print a.chrmeta</span>
 <span class="sd">    print a.guess_chromsome_name(&#39;chr1&#39;)</span>
+
+<span class="sd">====</span>
+<span class="sd">Code</span>
+<span class="sd">====</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="n">b</span><span class="s">&#39;This module needs Python 2.6 or later.&#39;</span>
 
 <span class="c"># Special variables #</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;0.0.0-5-g6bea06a&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;1.1.0&#39;</span>
 
 <span class="c"># Built-in modules #</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sqlite3</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">sqlite3</span>
 
 <span class="c"># The database #</span>
 <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s">&#39;/genomes.db&#39;</span>
@@ -106,7 +110,7 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">assembly</span><span class="p">):</span>
         <span class="c"># Check the input type #</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">assembly</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">assembly</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;The assembly paramater needs to be a string such as &quot;sacCer2&quot;.&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">assembly</span> <span class="ow">in</span> <span class="n">assemblies</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;The assembly &quot;</span><span class="si">%s</span><span class="s">&quot; was not found in the database.&#39;</span> <span class="o">%</span> <span class="n">assembly</span><span class="p">)</span>
@@ -120,24 +124,31 @@
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Assembly.chrmeta"><a class="viewcode-back" href="../index.html#genomes.Assembly.chrmeta">[docs]</a>    <span class="k">def</span> <span class="nf">chrmeta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A dictionary of chromosome metadata::</span>
+        <span class="sd">&quot;&quot;&quot;A dictionary of chromosome metadata:</span>
+
+<span class="sd">        ::</span>
 
 <span class="sd">            &gt;&gt;&gt; from genomes import Assembly</span>
 <span class="sd">            &gt;&gt;&gt; a = Assembly(&#39;TAIR10&#39;)</span>
 <span class="sd">            &gt;&gt;&gt; print a.chrmeta</span>
-<span class="sd">            {u&#39;c&#39;: {&#39;length&#39;: 154478}, u&#39;m&#39;: {&#39;length&#39;: 366924}, u&#39;1&#39;: {&#39;length&#39;: 30427671}, u&#39;3&#39;: {&#39;length&#39;: 23459830}, u&#39;2&#39;: {&#39;length&#39;: 19698289}, u&#39;5&#39;: {&#39;length&#39;: 26975502}, u&#39;4&#39;: {&#39;length&#39;: 18585056}}</span>
+<span class="sd">            {u&#39;c&#39;: {&#39;length&#39;: 154478, &#39;refseq&#39;: u&#39;NC_000932.1&#39;}, u&#39;m&#39;: {&#39;length&#39;: 366924, &#39;refseq&#39;: u&#39;NC_001284.2&#39;}, u&#39;1&#39;: {&#39;length&#39;: 30427671, &#39;refseq&#39;: u&#39;NC_003070.9&#39;}, u&#39;3&#39;: {&#39;length&#39;: 23459830, &#39;refseq&#39;: u&#39;NC_003074.8&#39;}, u&#39;2&#39;: {&#39;length&#39;: 19698289, &#39;refseq&#39;: u&#39;NC_003071.7&#39;}, u&#39;5&#39;: {&#39;length&#39;: 26975502, &#39;refseq&#39;: u&#39;NC_003076.8&#39;}, u&#39;4&#39;: {&#39;length&#39;: 18585056, &#39;refseq&#39;: u&#39;NC_003075.7&#39;}}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">chrom</span><span class="p">[</span><span class="s">&#39;label&#39;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">([(</span><span class="s">&#39;length&#39;</span><span class="p">,</span> <span class="n">chrom</span><span class="p">[</span><span class="s">&#39;length&#39;</span><span class="p">])]))</span> <span class="k">for</span> <span class="n">chrom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chromosomes</span><span class="p">])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">chrom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chromosomes</span><span class="p">:</span>
+            <span class="n">chrom_info</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">chrom_info</span><span class="p">[</span><span class="s">&#39;length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chrom</span><span class="p">[</span><span class="s">&#39;length&#39;</span><span class="p">]</span>
+            <span class="n">chrom_info</span><span class="p">[</span><span class="s">&#39;refseq&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">chrom</span><span class="p">[</span><span class="s">&#39;refseq_locus&#39;</span><span class="p">],</span> <span class="n">chrom</span><span class="p">[</span><span class="s">&#39;refseq_version&#39;</span><span class="p">])</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">chrom</span><span class="p">[</span><span class="s">&#39;label&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">chrom_info</span>
+        <span class="k">return</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">chrom</span><span class="p">[</span><span class="s">&#39;label&#39;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">([(</span><span class="s">&#39;length&#39;</span><span class="p">,</span> <span class="n">chrom</span><span class="p">[</span><span class="s">&#39;length&#39;</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;refseq&#39;</span><span class="p">,</span> <span class="n">chrom</span><span class="p">[</span><span class="s">&#39;refseq_locus&#39;</span><span class="p">])]))</span> <span class="k">for</span> <span class="n">chrom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chromosomes</span><span class="p">])</span>
 </div>
 <div class="viewcode-block" id="Assembly.guess_chromosome_name"><a class="viewcode-back" href="../index.html#genomes.Assembly.guess_chromosome_name">[docs]</a>    <span class="k">def</span> <span class="nf">guess_chromosome_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chromosome_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Searches the assembly for chromosome synonym names,</span>
-<span class="sd">           and returns the canonical name of the chromosome.</span>
-<span class="sd">           Returns None if the chromosome is not known about.</span>
+        <span class="sd">&quot;&quot;&quot;Searches the assembly for chromosome synonym names, and returns the canonical name of the chromosome.</span>
 
 <span class="sd">           :param chromosome_name: Any given name for a chromosome in this assembly.</span>
 <span class="sd">           :type  chromosome_name: string</span>
 
-<span class="sd">           :returns: The same or an other name for the chromosome.</span>
+<span class="sd">           :returns: The same or an other name for the chromosome. Returns None if the chromosome is not known about.</span>
 
 <span class="sd">           ::</span>
 
@@ -145,12 +156,20 @@
 <span class="sd">               &gt;&gt;&gt; a = Assembly(&#39;sacCer2&#39;)</span>
 <span class="sd">               &gt;&gt;&gt; print a.guess_chromosome_name(&#39;chrR&#39;)</span>
 <span class="sd">               2micron</span>
+<span class="sd">               &gt;&gt;&gt; a = Assembly(&#39;hg19&#39;)</span>
+<span class="sd">               &gt;&gt;&gt; print a.guess_chromosome_name(&#39;NC_000023.9&#39;)</span>
+<span class="sd">               chrX</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># Convert to unicode #</span>
         <span class="n">chromosome_name</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">chromosome_name</span><span class="p">)</span>
         <span class="c"># Check for synonyms #</span>
         <span class="k">for</span> <span class="n">chrom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chromosomes</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">chromosome_name</span> <span class="ow">in</span> <span class="n">chrom</span><span class="p">[</span><span class="s">&#39;synonyms&#39;</span><span class="p">]:</span> <span class="k">return</span> <span class="n">chrom</span><span class="p">[</span><span class="s">&#39;label&#39;</span><span class="p">]</span>
+        <span class="c"># Check for NCBI nomenclature #</span>
+        <span class="k">if</span> <span class="n">chromosome_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;NC_&#39;</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;\.[0-9]+$&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">chromosome_name</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">chrom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chromosomes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">chrom</span><span class="p">[</span><span class="s">&#39;refseq_locus&#39;</span><span class="p">]:</span> <span class="k">return</span> <span class="n">chrom</span><span class="p">[</span><span class="s">&#39;label&#39;</span><span class="p">]</span>
         <span class="c"># Do some guessing #</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">chromosome_name</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&#39;chr&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">chrom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chromosomes</span><span class="p">:</span>
@@ -174,7 +193,7 @@
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" size="18" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -197,13 +216,13 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">genomes v1.0.1</a> &raquo;</li>
+        <li><a href="../index.html">genomes v1.1.0</a> &raquo;</li>
           <li><a href="index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-      Last updated on Mar 01, 2012.
-    <a href="http://kopimi.com"><p>Kopimi</p></a>
+      Last updated on Aug 26, 2012.
+    <a href="http://opensource.org/licenses/MIT"><p>MIT licensed</p></a>
     </div>
   </body>
 </html>

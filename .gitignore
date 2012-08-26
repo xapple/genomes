@@ -12,6 +12,7 @@
 /.idea
 
 # Build stuff #
+_build/
 /MANIFEST
 /build/
 /dist/
