@@ -5,7 +5,7 @@ setup(
         version          = '1.0.1',
         description      = 'Access to genomic assemblies meta data',
         long_description = open('README.txt').read(),
-        license          = 'Kopimi',
+        license          = 'MIT',
         url              = 'http://xapple.github.com/genomes/',
         author           = 'Lucas Sinclair',
         author_email     = 'lucas.sinclair@me.com',
