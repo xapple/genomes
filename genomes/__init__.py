@@ -11,13 +11,10 @@ To install you can simply type::
 
     $ sudo easy_install genomes
 
-If you don't have permission to install it like that, you can simply download the code and include the directory in your python path::
+That's it. However, if that doesn't work because you don't have sufficient permissions, you can simply install it somewhere else (for instance in your home)::
 
-    $ wget http://pypi.python.org/packages/source/g/genomes/genomes-1.0.1.tar.gz
-    $ tar -xzf genomes-1.0.1.tar.gz
-    $ cd genomes-1.0.1/
-    $ sed -i "$ a\export PYTHONPATH=`pwd`/:\$PYTHONPATH" ~/.bashrc
-    $ source ~/.bashrc
+    $ cd ~
+    $ pip install -e git+https://github.com/xapple/genomes
 
 ========
 Examples
